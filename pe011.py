@@ -28,16 +28,17 @@ The product of these numbers is 26 × 63 × 78 × 14 = 1788696.
 What is the greatest product of four adjacent numbers in the same direction (up, down, left, right, or diagonally) in the 20×20 grid?
 """
 
-def update_greatest_product(numbers, greatest_product):
-    product = 1
-    for number in numbers:
-        product *= number
-    
-    if product > greatest_product:
-        greatest_product = product
-        print(numbers, greatest_product)
+def update_greatest_product(numbers):
+    if 0 not in numbers:
+        product = 1
+        for number in numbers:
+            product *= number
 
-    return greatest_product
+        global greatest_product
+
+        if product > greatest_product:
+            greatest_product = product
+            print(numbers, greatest_product)
 
 numbers_text = '''08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
@@ -69,6 +70,8 @@ for row in numbers_text.splitlines():
 # left/right
 for i in range(20):
     for j in range(20):
+
+        # left/right
         if j + 3 < 20:
             numbers = [
                 matrix[i][j + 0],
@@ -77,14 +80,9 @@ for i in range(20):
                 matrix[i][j + 3],
             ]
 
-            if 0 in numbers:
-                continue
+            update_greatest_product(numbers)
 
-            greatest_product = update_greatest_product(numbers, greatest_product)
-
-# up/down
-for j in range(20):
-    for i in range(20):
+        # up/down
         if i + 3 < 20:
             numbers = [
                 matrix[i + 0][j],
@@ -92,15 +90,10 @@ for j in range(20):
                 matrix[i + 2][j],
                 matrix[i + 3][j],
             ]
-
-            if 0 in numbers:
-                continue
-
-            greatest_product = update_greatest_product(numbers, greatest_product)
-
-# diagonal
-for i in range(20):
-    for j in range(20):
+            
+            update_greatest_product(numbers)
+                
+        # diagonal
         if i + 3 < 20 and j + 3 < 20:
             numbers = [
                 matrix[i + 0][j + 0],
@@ -109,14 +102,9 @@ for i in range(20):
                 matrix[i + 3][j + 3],
             ]
 
-            if 0 in numbers:
-                continue
-
-            greatest_product = update_greatest_product(numbers, greatest_product)
-
-# reverse diagonal
-for i in range(20):
-    for j in range(20):
+            update_greatest_product(numbers)
+                
+        # reverse diagonal
         if i + 3 < 20 and j - 3 >= 0:
             numbers = [
                 matrix[i + 0][j - 0],
@@ -124,8 +112,5 @@ for i in range(20):
                 matrix[i + 2][j - 2],
                 matrix[i + 3][j - 3],
             ]
-
-            if 0 in numbers:
-                continue
-
-            greatest_product = update_greatest_product(numbers, greatest_product)
+            
+            update_greatest_product(numbers)
